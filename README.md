@@ -49,4 +49,5 @@ If you are looking for a specific version of Postgres or PostGIS the following t
 
 | docker-postgis version | Postgres version | PostGIS version |
 |------------------------|------------------|-----------------|
+| 0.2.0                  | 9.5.3            | 2.2.2           |
 | 0.1.0                  | 9.4.4            | 2.1.7           |
