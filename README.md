@@ -22,30 +22,32 @@ When running this container you can optionally pass in environment variables to 
 | `POSTGRES_DB`         | Database to create and enable PostGIS        |
 
 ```bash
-$ docker run -it --rm azavea/postgis \
+$ docker run -it --rm \
 -p 5432:5432 \
 -e POSTGRES_USER=test_user \
 -e POSTGRES_PASSWORD=test_password \
--e POSTGRES_DB=test_db .
+-e POSTGRES_DB=test_db azavea/postgis
 ```
 
 To persist data on a host volume, mount the volume at `/var/lib/postgresql/data`:
 
 ```bash
-$ docker run -it --rm azavea/postgis \
+$ docker run -it --rm \
 -p 5432:5432 \
 -e POSTGRES_USER=test_user \
 -e POSTGRES_PASSWORD=test_password \
 -e POSTGRES_DB=test_db \
--v $(pwd)/data:/var/lib/postgresql/data .
+-v $(pwd)/data:/var/lib/postgresql/data azavea/postgis
 ```
 
 ## Versioning
-Versions of this container increment based on the following factors:
- - changes to any configuration files in this repository
- - changes to any dependencies or libraries installed in Dockerfile
 
-If you are looking for a specific version of Postgres or PostGIS the following table describes the relationship between this repository's version and the versions of Postgres and PostGIS.
+Previous versions of this container changed versions based on the following factors:
+
+ - Changes to any configuration files in this repository
+ - Changes to any dependencies or libraries installed in Dockerfile
+
+If you are looking for a specific version of Postgres or PostGIS the following table describes the relationship between this repository's version and the versions of Postgres and PostGIS:
 
 | docker-postgis version | Postgres version | PostGIS version |
 |------------------------|------------------|-----------------|

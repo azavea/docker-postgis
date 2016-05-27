@@ -9,7 +9,7 @@ install:
   - docker build -t quay.io/${TRAVIS_REPO_SLUG:0:6}/${TRAVIS_REPO_SLUG:14}:${TRAVIS_COMMIT:0:7} .
 
 script:
-  - "/bin/true"
+  - docker run --rm --entrypoint /bin/bash quay.io/${TRAVIS_REPO_SLUG:0:6}/${TRAVIS_REPO_SLUG:14}:${TRAVIS_COMMIT:0:7} -c 'ls -l $(ls -d /usr/lib/postgresql/9.*)/lib | grep postgis'
 
 before_deploy:
   - docker login -e . -p "${QUAY_PASSWORD}" -u "${QUAY_USER}" quay.io
@@ -25,7 +25,3 @@ deploy:
   on:
     repo: azavea/docker-postgis
     tags: true
-
-notifications:
-  slack:
-    secure: CzjUAJ5h/p7UCz02KxCHuKjoVP+G0rwDTZFzXqs4AAENhoNL4vfwJaDD5XHeV03qwgxuRfE7A/2kO1sJ8B6tx0B7pUeN/Ahn8azw+O4b7cdjZy4qo2ZNwJfo5aYdprpiG/HjcNnRzcLOu2NTd9fWZ9eByuYpIjfGjfsrfRvgM1+DwMfLX1Jux89BC2BiwHkVbSa3Cyu8qWTfaU0V/2M0G7FjE5ZCDrH6UP5++PP3aYwTUGo9eAjPOc2qDytU3GYZgaVH8Nh/Vv4bl20qXYySiCKPhmwX533xCRqAI/Qg2wmOuwerGzPgIFNHR0h0xcDTbsBT0YZmnw3PT5YMgMJbEsocRfF33HeChpu/83qhq/s94MyaRtnIcM9aLeXQcOfLRs1lysY9fu8gWeWfEsNXJEeo1+6MqG/Kiv0fIRIiMo0yqn/v/fzXt50ATqxYGM+v9Zi/vXEEhwdt77JcMbUm7UQIQjPJYVG6SewQuDqvnSc1piDmkVAeHzH2Mf5FbJbpcZT44UHtondYnKZZcWuXv2tz/ZGiUavZXDxyDPx94jpdnSq8xO7PV8r89kcBm1GCtCPX2ZLPaScawZ+NhgkT1seM22AuaSuifOOXVdspHBrDBd9/CGiqWJdaNgKRXW4qth9Su1+nbd8vGvnHHInG/48jgD+2tef5g1CmbmWbIio=
