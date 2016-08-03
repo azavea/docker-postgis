@@ -6,22 +6,21 @@ services:
   - docker
 
 install:
-  - docker build -t quay.io/${TRAVIS_REPO_SLUG:0:6}/${TRAVIS_REPO_SLUG:14}:${TRAVIS_COMMIT:0:7} .
+  - docker build -t quay.io/azavea/postgis:${TRAVIS_COMMIT:0:7} .
 
 script:
-  - docker run --rm --entrypoint /bin/bash quay.io/${TRAVIS_REPO_SLUG:0:6}/${TRAVIS_REPO_SLUG:14}:${TRAVIS_COMMIT:0:7} -c 'ls -l $(ls -d /usr/lib/postgresql/9.*)/lib | grep postgis'
+  - docker run -d -p 5432:5432 quay.io/azavea/postgis:${TRAVIS_COMMIT:0:7}
+  - sleep 5
+  - psql -U postgres -h localhost -c "CREATE EXTENSION postgis;"
 
-before_deploy:
+after_success:
   - docker login -e . -p "${QUAY_PASSWORD}" -u "${QUAY_USER}" quay.io
-
-deploy:
-- provider: script
-  script: ".travis/deploy.sh"
-  on:
-    repo: azavea/docker-postgis
-    branch: develop
-- provider: script
-  script: ".travis/deploy.sh"
-  on:
-    repo: azavea/docker-postgis
-    tags: true
+  - if [ "${TRAVIS_BRANCH}" == "develop" ]; then
+    docker push quay.io/azavea/postgis:${TRAVIS_COMMIT:0:7};
+    docker tag quay.io/azavea/postgis:${TRAVIS_COMMIT:0:7} quay.io/azavea/postgis:latest;
+    docker push quay.io/azavea/postgis:latest;
+    fi
+  - if [ -n "${TRAVIS_TAG}" ]; then
+    docker tag quay.io/azavea/postgis:${TRAVIS_COMMIT:0:7} quay.io/azavea/postgis:${TRAVIS_TAG};
+    docker push quay.io/azavea/postgis:${TRAVIS_TAG};
+    fi
