@@ -1,3 +1,10 @@
+## postgres9.6-postgis2.3
+
+### `c00ed7b`
+
+- Upgrade PostgreSQL to version 9.6.
+- Upgrade PostGIS to version 2.3.
+
 ## postgres9.5-postgis2.2
 
 ### `1037237`
