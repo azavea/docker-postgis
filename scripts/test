@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+set -u
+
+if [[ -n "${CI}" ]]; then
+    set -x
+fi
+
+function usage() {
+    echo -n \
+"Usage: $(basename "$0")
+Test container images built from templates.
+"
+}
+
+if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
+    if [ "${1:-}" = "--help" ]; then
+        usage
+    else
+        docker \
+            run -d --name postgres-test -p 5432:5432 "quay.io/azavea/postgis:$POSTGIS_MAJOR-postgres$PG_MAJOR-$VARIANT"
+
+        sleep 5
+
+        psql -U postgres -h localhost -c "CREATE EXTENSION postgis;"
+
+        docker stop postgres-test
+        docker rm postgres-test
+    fi
+fi
