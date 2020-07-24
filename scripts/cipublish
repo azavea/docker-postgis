@@ -17,7 +17,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         docker \
             login -u "${QUAY_USER}" -p "${QUAY_PASSWORD}" quay.io;
 
-        #docker \
-        #    push "quay.io/azavea/postgis:$POSTGIS_MAJOR-postgres$PG_MAJOR-$VARIANT";
+        docker \
+            push "quay.io/azavea/postgis:$POSTGIS_MAJOR-postgres$PG_MAJOR-$VARIANT";
     fi
 fi
