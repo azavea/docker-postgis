@@ -26,7 +26,7 @@ jobs:
             postgis_version: 2.5.4+dfsg-1.pgdg90+1
           - pg_major: "12.2"
             postgis_major: "3"
-            postgis_version: 3.0.1+dfsg-2.pgdg100+1
+            postgis_version: 3.0.1+dfsg-4.pgdg100+1
     env:
       DOCKER_BUILDKIT: 1
       PG_MAJOR: ${{ matrix.pg_major }}
