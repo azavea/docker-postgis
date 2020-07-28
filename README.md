@@ -1,6 +1,6 @@
 # docker-postgis
 
-[![CI](https://github.com/azavea/docker-postgis/workflows/CI/badge.svg)](https://github.com/azavea/docker-postgis/actions?query=workflow%3ACI)
+[![CI](https://github.com/azavea/docker-postgis/workflows/CI/badge.svg?branch=master)](https://github.com/azavea/docker-postgis/actions?query=workflow%3ACI)
 
 This repository contains a collection of templated `Dockerfile` for image variants designed to support PostGIS through PostgreSQL.
 
