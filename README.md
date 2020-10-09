@@ -42,8 +42,8 @@ This optional environment variable can be used to send arguments to `postgres in
 An example of how to use `cibuild` to build and test an image:
 
 ```bash
-$ CI=1 POSTGIS_MAJOR=2.5 POSTGIS_VERSION=2.5.2+dfsg-1~exp1.pgdg90+1 \
-  PG_MAJOR=11.4 VARIANT=slim \
+$ CI=1 POSTGIS_MAJOR=3 POSTGIS_VERSION=3.0.2+dfsg-2.pgdg100+1 \
+  PG_MAJOR=12.4 VARIANT=slim \
   ./scripts/cibuild
 ```
 

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        pg_major: ["9.6", "10.9", "11.4", "12.2"]
+        pg_major: ["9.6", "10.9", "11.4", "12.2", "12.4"]
         variant: [slim]
         include:
           - pg_major: "9.6"
@@ -26,7 +26,10 @@ jobs:
             postgis_version: 2.5.4+dfsg-1.pgdg90+1
           - pg_major: "12.2"
             postgis_major: "3"
-            postgis_version: 3.0.1+dfsg-4.pgdg100+1
+            postgis_version: 3.0.2+dfsg-2.pgdg100+1
+          - pg_major: "12.4"
+            postgis_major: "3"
+            postgis_version: 3.0.2+dfsg-2.pgdg100+1
     env:
       DOCKER_BUILDKIT: 1
       PG_MAJOR: ${{ matrix.pg_major }}
