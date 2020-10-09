@@ -11,6 +11,7 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         pg_major: ["9.6", "10.9", "11.4", "12.2", "12.4"]
         variant: [slim]
