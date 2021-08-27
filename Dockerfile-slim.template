@@ -3,8 +3,31 @@ FROM postgres:%%PG_MAJOR%%
 ENV POSTGIS_MAJOR %%POSTGIS_MAJOR%%
 ENV POSTGIS_VERSION %%POSTGIS_VERSION%%
 
-RUN \
-      apt-get update && apt-get install -y --no-install-recommends \
-              postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR=$POSTGIS_VERSION \
-              postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts \
-      && rm -rf /var/lib/apt/lists/*
+RUN set -ex \
+    # RDS usually lags behind the version of PostGIS maintained in the main
+    # repository. ca-certificates is required due to a 301 HTTP → HTTPS redirect
+    # from apt-archive.postgresql.org. apt-transport-https is required for
+    # stretch-based images (9.6, 10.9, and 11.4).
+    && apt-get update && apt-get install -y apt-transport-https ca-certificates --no-install-recommends \
+    && versionCodename=$(env -i bash -c ". /etc/os-release; echo \$VERSION | sed 's/.*(\(.*\))/\1/'") \
+    && echo "deb http://apt-archive.postgresql.org/pub/repos/apt/ $versionCodename-pgdg-archive main" > /etc/apt/sources.list.d/pgdg-archive.list \
+    && apt-get update \
+    # Pin PostgreSQL-specific packages so that we can upgrade the underlying OS
+    # (e.g., apt --installed list | grep pgdg).
+    && pinnedDeps=" \
+        libpq5 \
+        postgresql-$PG_MAJOR \
+        postgresql-client-$PG_MAJOR \
+        postgresql-client-common \
+        postgresql-common \
+    " \
+    && apt-mark hold $pinnedDeps && apt-get upgrade -y && apt-mark unhold $pinnedDeps \
+    # Now that we've installed ca-certificates and apt-transport-https,
+    # configured the archive repository, and updated Debian, we can install
+    # PostGIS.
+    && apt-get install -y --no-install-recommends \
+        postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR=$POSTGIS_VERSION \
+        postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts=$POSTGIS_VERSION \
+    # Purge build dependencies and clean up package state.
+    && apt-get purge -y --auto-remove apt-transport-https ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
