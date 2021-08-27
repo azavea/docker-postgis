@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pg_major: ["9.6", "10.9", "11.4", "12.2", "12.4"]
+        pg_major: ["9.6", "10.9", "11.4", "12.2", "12.4", "13.3"]
         variant: [slim]
         include:
           - pg_major: "9.6"
@@ -32,6 +32,9 @@ jobs:
           - pg_major: "12.4"
             postgis_major: "3"
             postgis_version: 3.0.2+dfsg-2.pgdg100+1
+          - pg_major: "13.3"
+            postgis_major: "3"
+            postgis_version: 3.0.3+dfsg-2.pgdg100+1
     env:
       DOCKER_BUILDKIT: 1
       PG_MAJOR: ${{ matrix.pg_major }}
