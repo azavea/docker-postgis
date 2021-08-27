@@ -19,13 +19,15 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         usage
     else
         docker \
-            run -d --name postgres-test -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 "quay.io/azavea/postgis:$POSTGIS_MAJOR-postgres$PG_MAJOR-$VARIANT"
+            run -d --name postgres-test -e POSTGRES_HOST_AUTH_METHOD=trust "quay.io/azavea/postgis:$POSTGIS_MAJOR-postgres$PG_MAJOR-$VARIANT"
 
         sleep 5
 
-        psql -U postgres -h localhost -c "CREATE EXTENSION postgis;"
+        trap "docker rm -f postgres-test" EXIT
 
-        docker stop postgres-test
-        docker rm postgres-test
+        docker exec postgres-test psql -U postgres -c "SELECT version();"
+        docker exec postgres-test psql -U postgres -c "CREATE EXTENSION postgis;"
+        docker exec postgres-test psql -U postgres -c "SELECT PostGIS_Full_Version();"
+        (( $(docker exec postgres-test psql -U postgres --no-align --tuples-only -c "SELECT ST_X(ST_Point(0,0));") == 0 ))
     fi
 fi
