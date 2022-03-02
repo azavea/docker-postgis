@@ -4,6 +4,8 @@
 
 This repository contains a collection of templated `Dockerfile` for image variants designed to support PostGIS through PostgreSQL.
 
+It was decided to start sunseting this project in favor of upstream - https://github.com/postgis/docker-postgis
+
 ## Usage
 
 ### Template Variables
